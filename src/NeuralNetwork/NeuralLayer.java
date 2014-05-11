@@ -27,7 +27,7 @@ public class NeuralLayer{
     public final ArrayList<Double> getWeights(){
         ArrayList<Double> weights = new ArrayList<Double>();
         for( Neuron neuron : neurons )
-            weights.addAll(neuron.getWeights());
+            weights.addAll( neuron.getWeights() );
         return weights;
     }
 

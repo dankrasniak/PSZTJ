@@ -10,7 +10,7 @@ public class Data {
     private ArrayList<Output> outputs = new ArrayList<Output>();
 
     /**
-     * Takes data and stores it for further usage.
+     * Takes <b>One line of</b> data and stores it for further usage.
      * @param input values that go into <b>Neural Network</b>.
      * @param output values that <b>Neural Network</b> returns.
      */

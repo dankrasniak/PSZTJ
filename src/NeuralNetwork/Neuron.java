@@ -1,5 +1,7 @@
 package NeuralNetwork;
 
+import Data.Input;
+
 import java.util.ArrayList;
 
 /**
@@ -19,11 +21,11 @@ public final class Neuron{
      * @param input
      * @return
      */
-    public final Double compute( final ArrayList<Double> input ) {
+    public final Double compute( final Input input ) {
         int i = input.size();
         Double result = 0.0;
-        while( ( i-- ) != 0 ){
-            result += input.set( i, ( input.get( i ) * weights.get( i ) ) );
+        while( ( i-- ) != 0 ) {
+            result += ( input.get( i ) * weights.get( i ) ); // TODO Update with proper formula.
         }
         return result;
     }
