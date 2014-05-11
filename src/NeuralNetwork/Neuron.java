@@ -2,17 +2,15 @@ package NeuralNetwork;
 
 import Data.Input;
 
-import java.util.ArrayList;
-
 /**
  * Base computing entity.
  * <p>Receives input and returns an output.</p>
  * Created by daniel on 08.05.14.
  */
 public final class Neuron{
-    private ArrayList<Double> weights;
+    private Weights weights;
 
-    public Neuron( final ArrayList<Double> weights ){
+    public Neuron( final Weights weights ){
         uploadWeights( weights );
     }
 
@@ -33,14 +31,14 @@ public final class Neuron{
     /**
      * Uploads new <b>Weights</b>.
      */
-    public final void uploadWeights( final ArrayList<Double> weights ){
+    public final void uploadWeights( final Weights weights ){
         this.weights = weights;
     }
 
     /**
      * @return the weights.
      */
-    public ArrayList<Double> getWeights(){
+    public Weights getWeights(){
         return weights;
     }
 }

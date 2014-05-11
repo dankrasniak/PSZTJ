@@ -17,10 +17,10 @@ public class NeuralNetwork {
      * Adds up <b>Weights</b> from  all the <b>Neurons</b> from the <b>Layer</b> in the <b>Network</b>.
      * @return weights.
      */
-    public final ArrayList<Double> getWeights() {
+    public final ArrayList<Double> getWeights() { // TODO
         ArrayList<Double> weights = new ArrayList<Double>();
-        for( NeuralLayer neuralLayer : neuralLayers )
-            weights.addAll( neuralLayer.getWeights() );
+//        for( NeuralLayer neuralLayer : neuralLayers )
+//            weights.addAll( neuralLayer.getWeights() );
         return weights;
     }
 

@@ -1,0 +1,42 @@
+package NeuralNetwork;
+
+import java.util.ArrayList;
+
+/**
+ * Created by daniel on 11.05.14.
+ */
+public class Weights {
+    private ArrayList<Double> weights;
+
+    public Weights( final ArrayList<Double> weights ) {
+        this.weights = weights;
+    }
+
+    /**
+     * @return input values.
+     */
+    public final ArrayList<Double> getInput() {
+        return weights;
+    }
+
+    /**
+     * @return the number of inputs.
+     */
+    public final int size() {
+        return weights.size();
+    }
+
+    /**
+     * @return the value of input of given index.
+     */
+    public final Double get( final int index ) {
+        return weights.get( index );
+    }
+
+    /**
+     * Set the value of <b>Weight</b> of given <b>Index number</b>.
+     */
+    public final void set( final int index, final Double weight ) {
+        this.weights.set( index, weight );
+    }
+}
