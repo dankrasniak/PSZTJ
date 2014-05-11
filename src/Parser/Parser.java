@@ -1,9 +1,15 @@
 package Parser;
 
+import Data.Constants;
+import Data.Data;
+import Data.Input;
+import Data.Output;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Parser for input txt files.
@@ -11,27 +17,63 @@ import java.io.IOException;
  */
 public class Parser {
     private BufferedReader br;
+    private Data data = new Data();
 
     public Parser() {
         try {
             br = new BufferedReader( new FileReader( "input.txt" ) );
-            StringBuilder sb = new StringBuilder();
             String line = br.readLine();
 
             while( line != null ) {
-                sb.append( line );
-                sb.append( System.lineSeparator() );
+                parseLine( line );
                 line = br.readLine();
             }
-            String everything = sb.toString();
-        } catch ( FileNotFoundException e ) {
+        } catch( FileNotFoundException e ) {
             e.printStackTrace();
-        } catch ( IOException e ) {
+        } catch( IOException e ) {
             e.printStackTrace();
         } finally {
-            br.close();
+            try {
+                br.close();
+            } catch( IOException e ) {
+                e.printStackTrace();
+            }
         }
     }
 
+    public static void main( String[] args ) {
+        Parser parser = new Parser();
+        Data data = parser.getExpectedData();
 
+    }
+
+    /**
+     * Parses Line of txt from <b>Input File</b>, converts it to <b>Input and Output</b> and
+     * adds it to local <b>Data</b> variable.
+     * @param line to parse and convert into useful data.
+     */
+    private void parseLine( String line ) {
+        if( line.startsWith( "#" ) || line.length() < 5 ) return;
+        line = line.trim();
+        final String[] values = line.split( "\\s+" );
+        ArrayList<Double> inputValues = new ArrayList<Double>( Constants.NUMBER_OF_INPUTS );
+
+        int i = 0;
+        do {
+            inputValues.add( Double.parseDouble( values[ i ] ) );
+        }
+        while( ++i != Constants.NUMBER_OF_INPUTS );
+
+        final Input input = new Input( inputValues );
+        final Output output = new Output( Double.parseDouble( values[ i ] ) );
+        data.inputData( input, output );
+    }
+
+    /**
+     * @return expected data values.
+     */
+    public final Data getExpectedData() {
+        return data;
+    }
 }
+

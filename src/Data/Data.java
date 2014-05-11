@@ -6,8 +6,8 @@ import java.util.ArrayList;
  * Created by daniel on 11.05.14.
  */
 public class Data {
-    private ArrayList<Input> inputs;
-    private ArrayList<Output> outputs;
+    private ArrayList<Input> inputs = new ArrayList<Input>();
+    private ArrayList<Output> outputs = new ArrayList<Output>();
 
     /**
      * Takes data and stores it for further usage.
