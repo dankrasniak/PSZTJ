@@ -24,16 +24,21 @@ public class NeuralLayer{
      * Adds up <b>Weights</b> from  all the <b>Neurons</b> from the <b>Layer</b>.
      * @return weights.
      */
-    public final Weights getWeights(){ // TODO
-        Weights weights = new Weights();
+    public final ArrayList<Weights> getWeights() {
+        ArrayList<Weights> weights = new ArrayList<Weights>( neurons.size() );
         for( Neuron neuron : neurons )
-            weights.addAll( neuron.getWeights() );
+            weights.add( neuron.getWeights() );
+//        Weights weights = new Weights();
+//        for( Neuron neuron : neurons )
+//            weights.addAll( neuron.getWeights() );
         return weights;
     }
 
-    public final void uploadNewWeights( final Weights weights ){
-        for( Neuron neuron : neurons ){
-            // TODO
+    public final void uploadNewWeights( ArrayList<Weights> weights ) {
+        int index = neurons.size();
+        while( index-- != 0 ) {
+            neurons.get( index ).uploadWeights( weights.get( index ) );
+            weights.remove( index );
         }
     }
 }

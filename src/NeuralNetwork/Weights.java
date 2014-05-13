@@ -13,21 +13,21 @@ public class Weights {
     }
 
     /**
-     * @return input values.
+     * @return weight values.
      */
-    public final ArrayList<Double> getInput() {
+    public final ArrayList<Double> getWeights() {
         return weights;
     }
 
     /**
-     * @return the number of inputs.
+     * @return the number of weights.
      */
     public final int size() {
         return weights.size();
     }
 
     /**
-     * @return the value of input of given index.
+     * @return the value of weight of given index.
      */
     public final Double get( final int index ) {
         return weights.get( index );
