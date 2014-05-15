@@ -6,8 +6,8 @@ import java.util.BitSet;
 /**
  * Default BitSet size() method is worth nothing.
  * We need method which tells us the true size of out BitSet.
+ * 
  * @author Maciej
- *
  */
 public class NewBitSet extends BitSet
 {

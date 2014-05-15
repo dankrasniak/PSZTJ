@@ -3,6 +3,7 @@ package geneticalgorithm;
 import java.util.Random;
 
 
+
 public class Fenotype implements Comparable<Fenotype>
 {
 	private NewBitSet genotype;

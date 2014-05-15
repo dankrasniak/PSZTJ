@@ -60,12 +60,11 @@ public class NeuralNetwork {
     }
     
     
+    
     // TODO for testing only!
     public final double testFenotype(final Fenotype fenotype)
     {
     	Random random = new Random();
     	return random.nextDouble();
     }
-
-
 }

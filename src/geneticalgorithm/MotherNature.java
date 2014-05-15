@@ -236,14 +236,5 @@ public class MotherNature
 			System.out.println(offsprings.get(i).getQuality());
 		}
 	}
-	
-	
-	/**
-	 //TODO
-	 * For testing only
-	
-	public Fenotype getFenotype(int index)
-	{
-		return population.get(index);
-	}*/
+
 }
