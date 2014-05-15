@@ -1,46 +1,65 @@
 package geneticalgorithm;
 
-import java.util.ArrayList;
-import java.util.BitSet;
+import java.util.Random;
 
 
-class Fenotype 
+public class Fenotype implements Comparable<Fenotype>
 {
-	private BitSet genotype;
+	private NewBitSet genotype;
 	
 	/**
-	 * Wartosc funkcji celu
+	 * Objective function
 	 */
 	private double quality;
 	
 	
-	Fenotype(final int genotypeLength)
+	public Fenotype(final int genotypeLength)
 	{
+		// generate random genotype
+		genotype = new NewBitSet(genotypeLength);
+		for(int i = 0; i < genotypeLength; i++)
+        {
+        	Random random = new Random();
+        	if(random.nextBoolean())
+        		genotype.set(i);
+        }
 		quality = 0;
 	}
 	
-	void setQuality(final double quality)
+	public void setQuality(final double quality)
 	{
 		this.quality = quality;
 	}
 	
-	double getQuality()
+	public double getQuality()
 	{
 		return quality;
 	}
 	
-	boolean getGene(final int index)
+	public boolean getGene(final int index)
 	{
 		return genotype.get(index);
 	}
 	
-	void setGene(final int index, final boolean value)
+	public void setGene(final int index, final boolean value)
 	{
 		genotype.set(index, value);
 	}
 	
-	BitSet getGenotype()
+	public NewBitSet getGenotype()
 	{
 		return genotype;
+	}
+
+	@Override
+	public int compareTo(final Fenotype other)
+	{
+		if(other.getQuality() < this.quality)
+			return -1;
+		if(other.getQuality() == this.quality)
+			return 0;
+		if(other.getQuality() > this.quality)
+			return 1;
+		return 0;
 	}
 }
