@@ -1,4 +1,4 @@
-package Data;
+package data;
 
 /**
  * Created by daniel on 11.05.14.

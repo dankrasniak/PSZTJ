@@ -1,7 +1,6 @@
-package NeuralNetwork;
+package neuralnetwork;
 
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.Iterator;
 import java.util.Random;
 
@@ -50,7 +49,7 @@ public class NeuralNetwork {
     }
     
     /**
-     * Uploads new <b>Weights</b> to the <b>NeuralNetwork</b>.
+     * Uploads new <b>Weights</b> to the <b>neuralnetwork</b>.
      */
     public final void uploadWeights( ArrayList<Weights> weights ) {
         Iterator<NeuralLayer> nerualLayerIterator = neuralLayers.iterator();

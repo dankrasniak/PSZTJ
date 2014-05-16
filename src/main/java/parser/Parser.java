@@ -1,9 +1,9 @@
-package Parser;
+package parser;
 
-import Data.Constants;
-import Data.Data;
-import Data.Input;
-import Data.Output;
+import data.Constants;
+import data.Data;
+import data.Input;
+import data.Output;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * Parser for input txt files.
+ * parser for input txt files.
  * Created by daniel on 10.05.14.
  */
 public class Parser {
@@ -49,7 +49,7 @@ public class Parser {
 
     /**
      * Parses Line of txt from <b>Input File</b>, converts it to <b>Input and Output</b> and
-     * adds it to local <b>Data</b> variable.
+     * adds it to local <b>data</b> variable.
      * @param line to parse and convert into useful data.
      */
     private void parseLine( String line ) {
