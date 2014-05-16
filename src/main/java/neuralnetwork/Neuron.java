@@ -1,6 +1,6 @@
-package NeuralNetwork;
+package neuralnetwork;
 
-import Data.Input;
+import data.Input;
 
 /**
  * Base computing entity.

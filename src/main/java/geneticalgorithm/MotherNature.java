@@ -1,12 +1,11 @@
 package geneticalgorithm;
 
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import NeuralNetwork.NeuralNetwork;
+import neuralnetwork.NeuralNetwork;
 
 
 

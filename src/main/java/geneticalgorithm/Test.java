@@ -1,6 +1,6 @@
 package geneticalgorithm;
 
-import NeuralNetwork.NeuralNetwork;
+import neuralnetwork.NeuralNetwork;
 
 public class Test {
 	public static void main(String args[])

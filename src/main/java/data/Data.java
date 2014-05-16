@@ -1,4 +1,4 @@
-package Data;
+package data;
 
 import java.util.ArrayList;
 
@@ -16,7 +16,7 @@ public class Data {
     }
 
     /**
-     * Compares the <b>Outputs</b> of given <b>Data Objects</b>.
+     * Compares the <b>Outputs</b> of given <b>data Objects</b>.
      * @return percentage of tested data that output values equal expected output values.
      */
     public static final Double compare( final Data testedData, final Data expectedData ) {
