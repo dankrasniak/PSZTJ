@@ -18,7 +18,7 @@ public class Fenotype implements Comparable<Fenotype>
 	public Fenotype(ArrayList<Double> genotype)
 	{
 		// generate random genotype
-		genotype = new ArrayList<Double>();
+		this.genotype = genotype;//new ArrayList<Double>();
 		quality = 0;
 	}
 	

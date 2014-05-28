@@ -1,5 +1,7 @@
 package neuralnetwork;
 
+import com.sun.javafx.collections.ImmutableObservableList;
+
 import java.util.ArrayList;
 
 /**
