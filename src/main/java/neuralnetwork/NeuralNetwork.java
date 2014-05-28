@@ -64,7 +64,6 @@ public class NeuralNetwork {
         int index = 0;
         for(Weights weights : weightsReferences) {
             for( int i = 0; i < weights.size(); ++i ) {
-                System.out.println( index );
                 weights.set(i,
                         newWeights.get(index++));
             }

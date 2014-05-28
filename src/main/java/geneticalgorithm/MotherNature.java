@@ -270,10 +270,10 @@ public class MotherNature
 
     private Double rateOutputs(final ArrayList<Output> receivedOutputs)
     {
-        int TP = 0;
-        int FP = 0;
-        int TN = 0;
-        int FN = 0;
+        double TP = 0;
+        double FP = 0;
+        double TN = 0;
+        double FN = 0;
         ArrayList<Output> expectedOutputs = learningData.getOutputs();
         for(int i = 0; i < receivedOutputs.size(); i++)
         {
@@ -286,8 +286,8 @@ public class MotherNature
             if(!expectedOutputs.get(i).getOutput() && receivedOutputs.get(i).getOutput())
                 ++FP;
         }
-        Double precision = (double) ( TP / (TP + FP) );
-        Double recall = (double) ( TP / (TP + FN) );
+        Double precision = ( TP / (TP + FP) );
+        Double recall = ( TP / (TP + FN) );
         return ( precision + recall ) / 2;
     }
 }
