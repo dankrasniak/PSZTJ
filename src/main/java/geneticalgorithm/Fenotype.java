@@ -1,12 +1,13 @@
 package geneticalgorithm;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 
 
 public class Fenotype implements Comparable<Fenotype>
 {
-	private NewBitSet genotype;
+	private ArrayList<Double> genotype;
 	
 	/**
 	 * Objective function
@@ -14,16 +15,10 @@ public class Fenotype implements Comparable<Fenotype>
 	private double quality;
 	
 	
-	public Fenotype(final int genotypeLength)
+	public Fenotype(ArrayList<Double> genotype)
 	{
 		// generate random genotype
-		genotype = new NewBitSet(genotypeLength);
-		for(int i = 0; i < genotypeLength; i++)
-        {
-        	Random random = new Random();
-        	if(random.nextBoolean())
-        		genotype.set(i);
-        }
+		genotype = new ArrayList<Double>();
 		quality = 0;
 	}
 	
@@ -36,18 +31,20 @@ public class Fenotype implements Comparable<Fenotype>
 	{
 		return quality;
 	}
-	
-	public boolean getGene(final int index)
+
+	public Double getGene(final int index)
 	{
+        //TODO
 		return genotype.get(index);
 	}
 	
-	public void setGene(final int index, final boolean value)
+	public void setGene(final int index, final Double value)
 	{
+        //TODO
 		genotype.set(index, value);
 	}
 	
-	public NewBitSet getGenotype()
+	public ArrayList<Double> getGenotype()
 	{
 		return genotype;
 	}

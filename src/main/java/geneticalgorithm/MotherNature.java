@@ -24,13 +24,13 @@ public class MotherNature
 		population = new ArrayList<Fenotype>();
 		offsprings = new ArrayList<Fenotype>();
 		// Get actual weights of neural network, which will tell by the way about quantity of all weights.
-		NewBitSet startingWeights = neuralNetwork.getWeights();
+		ArrayList<Double> startingWeights = new ArrayList<Double>();//neuralNetwork.getWeights();
 		
 		Fenotype tmp;
 		// Generating first population
 		for(int i = 0; i < populationSize; i++)
 		{
-			tmp = new Fenotype(startingWeights.realSize());
+			tmp = generateRandomFenotype(startingWeights.size());
 			tmp.setQuality(neuralNetwork.testFenotype(tmp));
 			population.add(tmp);
 		}
@@ -131,84 +131,96 @@ public class MotherNature
 	 * 						c^2				<br>
 	 * <br>
 	 * Where x is single weight of first fenotype, y is from second fenotype
-	 * and c is maximal difference between weights which is 255
+	 * and c is maximal difference between weights which is... about 255
 	 * 
 	 */
+    //TODO change to double
 	private double compareFenotypes(final Fenotype first, final Fenotype second)
 	{
 		double result = 0;
-		if(first.getGenotype().realSize() != second.getGenotype().realSize())
+		if(first.getGenotype().size() != second.getGenotype().size())
 		{
 			return result;
 		}
-			
-		byte firstWeight;
-		byte secondWeight;
-		for(int i = 0; i < first.getGenotype().realSize(); i += 8)
+		Double firstWeight;
+		Double secondWeight;
+		for(int i = 0; i < first.getGenotype().size(); i++)
 		{
-			firstWeight = toByte(new NewBitSet(8, first.getGenotype().get(i, i+8)));
-			secondWeight = toByte(new NewBitSet(8, second.getGenotype().get(i, i+8)));
+			firstWeight = first.getGene(i);
+			secondWeight = second.getGene(i);
 			result += ( 1 - ( (double)Math.pow((Math.abs(firstWeight - secondWeight)), 2) / 65025.0 ) );
 		}
-		return result / (first.getGenotype().realSize() / 8);
+		return result / (first.getGenotype().size());
 	}
-	
-	
-	private byte toByte(NewBitSet bitSet)
-	{
-		if(bitSet.realSize() != 8)
-			throw new RuntimeException();
-		byte result = 0;
-		if(bitSet.get(0))
-			result += -128;
-		if(bitSet.get(1))
-			result += 64;
-		if(bitSet.get(2))
-			result += 32;
-		if(bitSet.get(3))
-			result += 16;
-		if(bitSet.get(4))
-			result += 8;
-		if(bitSet.get(5))
-			result += 4;
-		if(bitSet.get(6))
-			result += 2;
-		if(bitSet.get(7))
-			result += 1;
-		
-		return result;
-	}
-	
 
-	private Fenotype generateOffspring(final Fenotype wife, final Fenotype husband, final double mutationProbability, final NeuralNetwork neuralNetwork)
-	{		
+
+	private Fenotype generateOffspringBinary(final Fenotype wife, final Fenotype husband, final double mutationProbability, final NeuralNetwork neuralNetwork)
+    {
 		assert mutationProbability >= 0 && mutationProbability <= 1;
-		Fenotype offspring = new Fenotype(wife.getGenotype().realSize());
-		Random random = new Random();
-		boolean newGene;
-		for(int i = 0; i < wife.getGenotype().realSize(); i++)
-		{
-			// If we randomed (50%) true or husband's genotype is exceeded, we take wife's gene
-			if(random.nextBoolean() || i >= husband.getGenotype().realSize())
-			{
-				newGene =  wife.getGene(i);
-			}
-			else
-			{
-				newGene =  husband.getGene(i);
-			}
-			if(random.nextDouble() <= mutationProbability)
-			{
-				newGene = !newGene;
-			}
-			offspring.setGene(i, newGene);
-		}
-		//offspring.setQuality( neuralNetwork.testFenotype(offspring) );
-		// TODO FOR TESTING ONLY! Replace with above
-		offspring.setQuality((wife.getQuality() + husband.getQuality()) / 2);
-		//System.out.println(offspring.getQuality() + "   " + wife.getQuality() + "   " + husband.getQuality());
-		return offspring;
+
+        ArrayList<Double> offspringGenotype = new ArrayList<Double>();
+        Random random = new Random();
+        char[] wifeGene;
+        char[] husbandGene;
+        char[] offspringGene;
+        for(int i = 0; i < wife.getGenotype().size(); ++i)
+        {
+            wifeGene = Long.toString(Double.doubleToLongBits(wife.getGene(i)), 2).toCharArray();
+            husbandGene = Long.toString(Double.doubleToLongBits(husband.getGene(i)), 2).toCharArray();
+            offspringGene = new char[wifeGene.length];
+            for(int j = 0; j < wifeGene.length; ++j)
+            {
+                // If we randomed (50%) true or husband's genotype is exceeded, we take wife's gene
+                if(random.nextBoolean() || i >= husband.getGenotype().size())
+                {
+                    offspringGene[j] = wifeGene[j];
+                }
+                else
+                {
+                    offspringGene[j] = husbandGene[j];
+                }
+                if(random.nextDouble() <= mutationProbability)
+                {
+                    if(offspringGene[j] == '0')
+                    {
+                        offspringGene[j] = '1';
+                    }
+                    else
+                    {
+                        offspringGene[j] = '0';
+                    }
+                }
+            }
+            offspringGenotype.add(Double.longBitsToDouble(Long.parseLong(new String(offspringGene), 2)));
+        }
+        return new Fenotype(offspringGenotype);
 	}
+
+
+    private Fenotype generateOffspring(final Fenotype wife, final Fenotype husband, final double mutationProbability, final NeuralNetwork neuralNetwork)
+    {
+        ArrayList<Double> offspringGenotype = new ArrayList<Double>();
+        Random random = new Random();
+        Double newGene;
+        for(int i = 0; i < wife.getGenotype().size(); i++)
+        {
+            // If we randomed (50%) true or husband's genotype is exceeded, we take wife's gene
+            if(random.nextBoolean() || i >= husband.getGenotype().size())
+            {
+                newGene =  wife.getGene(i);
+            }
+            else
+            {
+                newGene =  husband.getGene(i);
+            }
+            if(random.nextDouble() <= mutationProbability)
+            {
+                newGene *= (random.nextDouble() - 0.5)/10;
+            }
+            offspringGenotype.add(newGene);
+        }
+        return new Fenotype(offspringGenotype);
+    }
 	
 	
 
@@ -235,5 +247,18 @@ public class MotherNature
 			System.out.println(offsprings.get(i).getQuality());
 		}
 	}
+
+
+
+    private Fenotype generateRandomFenotype(int genotypeSize)
+    {
+        ArrayList<Double> genotype = new ArrayList<Double>();
+        Random random = new Random();
+        for(int i = 0; i < genotypeSize; i++)
+        {
+            genotype.add(random.nextDouble()*20 - 10);
+        }
+        return new Fenotype(genotype);
+    }
 
 }
