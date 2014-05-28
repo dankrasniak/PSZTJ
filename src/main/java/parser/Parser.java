@@ -43,7 +43,7 @@ public class Parser {
 
     public static void main( String[] args ) {
         Parser parser = new Parser();
-        Data data = parser.getExpectedData();
+        Data data = parser.getData();
 
     }
 
@@ -65,14 +65,14 @@ public class Parser {
         while( ++i != Constants.NUMBER_OF_INPUTS );
 
         final Input input = new Input( inputValues );
-        final Output output = new Output( Double.parseDouble( values[ i ] ) );
+        final Output output = new Output( Double.parseDouble( values[ i ] ) >= 0 );
         data.inputData( input, output );
     }
 
     /**
      * @return expected data values.
      */
-    public final Data getExpectedData() {
+    public final Data getData() {
         return data;
     }
 }

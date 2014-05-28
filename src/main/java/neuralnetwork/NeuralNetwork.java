@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
+import data.Data;
 import data.Input;
+import data.Output;
 import geneticalgorithm.Fenotype;
 import geneticalgorithm.NewBitSet;
 
@@ -61,19 +63,24 @@ public class NeuralNetwork {
         ArrayList<Weights> weightsReferences = getWeights();
         int index = 0;
         for(Weights weights : weightsReferences) {
-            weights.set(index,
-                    newWeights.get(index++));
+            weights.set(i++, newWeights.get(index++));
         }
     }
 
-    public final int compute( final Input input ) {
+    public final ArrayList<Output> computeData( final Data data ) {
+        ArrayList<Output> outputs = new ArrayList<Output>();
+        ArrayList<Input> inputs = data.getInputs();
+        for(Input input : inputs) {
+            outputs.add(new Output(compute(input)));
+        }
+        return outputs;
+    }
+
+    public final boolean compute( final Input input ) {
         Input tmpInput = input;
         for( NeuralLayer neuralLayer : neuralLayers ) {
             tmpInput = neuralLayer.compute(tmpInput);
         }
-        if( tmpInput.get( 0 ) >= 0 )
-            return 1;
-        else
-            return -1;
+        return tmpInput.get( 0 ) >= 0;
     }
 }

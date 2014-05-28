@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import data.Data;
+import data.Output;
 import neuralnetwork.NeuralNetwork;
 
 
@@ -16,22 +18,27 @@ public class MotherNature
 	private NeuralNetwork neuralNetwork;
 	// Used in getParent() for unlinear randoming
 	private double populationQualitySum;
+	private Data learningData;
 	
-	
-	public MotherNature(final NeuralNetwork neuralNetwork, final int populationSize)
+	public MotherNature(final NeuralNetwork neuralNetwork, final int populationSize, final Data learningData)
 	{
 		this.neuralNetwork = neuralNetwork;
+        this.learningData = learningData;
 		population = new ArrayList<Fenotype>();
 		offsprings = new ArrayList<Fenotype>();
 		// Get actual weights of neural network, which will tell by the way about quantity of all weights.
 		ArrayList<Double> startingWeights = neuralNetwork.getDoubleWeights();
 		
 		Fenotype tmp;
+        ArrayList<Output> receivedOutputs;
 		// Generating first population
 		for(int i = 0; i < populationSize; i++)
 		{
 			tmp = generateRandomFenotype(startingWeights.size());
-			tmp.setQuality(0);
+            neuralNetwork.uploadWeights(tmp.getGenotype());
+            receivedOutputs = neuralNetwork.computeData(learningData);
+			tmp.setQuality(rateOutputs(receivedOutputs));
+            System.out.println("Qualities: " + tmp.getQuality());
 			population.add(tmp);
 		}
 		Collections.sort(population);
@@ -131,7 +138,7 @@ public class MotherNature
 	 * 						c^2				<br>
 	 * <br>
 	 * Where x is single weight of first fenotype, y is from second fenotype
-	 * and c is maximal difference between weights which is... about 255
+	 * and c is maximal difference between weights which is... about 10
 	 * 
 	 */
     //TODO change to double
@@ -148,7 +155,7 @@ public class MotherNature
 		{
 			firstWeight = first.getGene(i);
 			secondWeight = second.getGene(i);
-			result += ( 1 - ( (double)Math.pow((Math.abs(firstWeight - secondWeight)), 2) / 65025.0 ) );
+			result += ( 1 - ( (double)Math.pow((Math.abs(firstWeight - secondWeight)), 2) / 100.0 ) );
 		}
 		return result / (first.getGenotype().size());
 	}
@@ -261,4 +268,26 @@ public class MotherNature
         return new Fenotype(genotype);
     }
 
+    private Double rateOutputs(final ArrayList<Output> receivedOutputs)
+    {
+        int TP = 0;
+        int FP = 0;
+        int TN = 0;
+        int FN = 0;
+        ArrayList<Output> expectedOutputs = learningData.getOutputs();
+        for(int i = 0; i < receivedOutputs.size(); i++)
+        {
+            if(expectedOutputs.get(i).getOutput() && receivedOutputs.get(i).getOutput())
+                ++TP;
+            if(expectedOutputs.get(i).getOutput() && !receivedOutputs.get(i).getOutput())
+                ++FN;
+            if(!expectedOutputs.get(i).getOutput() && !receivedOutputs.get(i).getOutput())
+                ++TN;
+            if(!expectedOutputs.get(i).getOutput() && receivedOutputs.get(i).getOutput())
+                ++FP;
+        }
+        Double precision = (double) ( TP / (TP + FP) );
+        Double recall = (double) ( TP / (TP + FN) );
+        return ( precision + recall ) / 2;
+    }
 }
