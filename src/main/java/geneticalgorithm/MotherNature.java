@@ -88,7 +88,7 @@ public class MotherNature
 			husband = getParent(true);
 		}
 		
-		Fenotype offspring = generateOffspring(wife, husband, 0.01, neuralNetwork);
+		Fenotype offspring = generateOffspring(wife, husband, 0.1, neuralNetwork);
 		offsprings.add(offspring);
 	}
 	
@@ -174,7 +174,7 @@ public class MotherNature
         {
             wifeGene = Long.toString(Double.doubleToLongBits(wife.getGene(i)), 2).toCharArray();
             husbandGene = Long.toString(Double.doubleToLongBits(husband.getGene(i)), 2).toCharArray();
-            offspringGene = new char[wifeGene.length];
+            offspringGene = new char[wifeGene.length+1];
             for(int j = 0; j < wifeGene.length; ++j)
             {
                 // If we randomed (50%) true or husband's genotype is exceeded, we take wife's gene
@@ -200,7 +200,11 @@ public class MotherNature
             }
             offspringGenotype.add(Double.longBitsToDouble(Long.parseLong(new String(offspringGene), 2)));
         }
-        return new Fenotype(offspringGenotype);
+        Fenotype offspring = new Fenotype(offspringGenotype);
+        neuralNetwork.uploadWeights(offspring.getGenotype());
+        ArrayList<Output> receivedOutputs = neuralNetwork.computeData(learningData);
+        offspring.setQuality(rateOutputs(receivedOutputs));
+        return offspring;
 	}
 
 
@@ -220,13 +224,18 @@ public class MotherNature
             {
                 newGene =  husband.getGene(i);
             }
-            if(random.nextDouble() <= mutationProbability)
+            /*if(random.nextDouble() <= mutationProbability)
             {
                 newGene *= (random.nextDouble() - 0.5)/10;
-            }
+            }*/
+            newGene *= (random.nextDouble() - 0.5)*mutationProbability;
             offspringGenotype.add(newGene);
         }
-        return new Fenotype(offspringGenotype);
+        Fenotype offspring = new Fenotype(offspringGenotype);
+        neuralNetwork.uploadWeights(offspring.getGenotype());
+        ArrayList<Output> receivedOutputs = neuralNetwork.computeData(learningData);
+        offspring.setQuality(rateOutputs(receivedOutputs));
+        return offspring;
     }
 	
 	
@@ -247,11 +256,15 @@ public class MotherNature
 	 //TODO
 	 * For testing only
 	 */
-	public void printOffspringsQualities()
+	public void printWeights()
 	{
-		for(int i = 0; i < offsprings.size(); i++)
-		{
-			System.out.println(offsprings.get(i).getQuality());
+        for(Fenotype fenotype : population)
+        {
+			for(Double weight : fenotype.getGenotype())
+            {
+                System.out.print(weight + "  ");
+            }
+            System.out.println();
 		}
 	}
 

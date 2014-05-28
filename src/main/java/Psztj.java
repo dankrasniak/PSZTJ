@@ -53,6 +53,25 @@ public class Psztj {
         NeuralNetwork neuralNetwork = new NeuralNetwork(neuralLayers);
         MotherNature motherNature = new MotherNature(neuralNetwork, 6, learningData);
 
+        /*motherNature.nextEpoch();
+        System.out.println("Nowe: ");
+        motherNature.printPopulationQualities();
+        motherNature.nextEpoch();
+        System.out.println("Nowe: ");
+        motherNature.printPopulationQualities();
+        motherNature.nextEpoch();
+        System.out.println("Nowe: ");
+        motherNature.printPopulationQualities();
+        motherNature.nextEpoch();
+        System.out.println("Nowe: ");
+        motherNature.printPopulationQualities();*/
+        for(int i = 0; i < 500; i++)
+            motherNature.nextEpoch();
+
+        System.out.println("Nowe: ");
+        motherNature.printPopulationQualities();
+        System.out.println("Wagi: ");
+        motherNature.printWeights();
 
 
     }
