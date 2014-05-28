@@ -24,14 +24,14 @@ public class MotherNature
 		population = new ArrayList<Fenotype>();
 		offsprings = new ArrayList<Fenotype>();
 		// Get actual weights of neural network, which will tell by the way about quantity of all weights.
-		ArrayList<Double> startingWeights = new ArrayList<Double>();//neuralNetwork.getWeights();
+		ArrayList<Double> startingWeights = neuralNetwork.getDoubleWeights();
 		
 		Fenotype tmp;
 		// Generating first population
 		for(int i = 0; i < populationSize; i++)
 		{
 			tmp = generateRandomFenotype(startingWeights.size());
-			tmp.setQuality(neuralNetwork.testFenotype(tmp));
+			tmp.setQuality(0);
 			population.add(tmp);
 		}
 		Collections.sort(population);

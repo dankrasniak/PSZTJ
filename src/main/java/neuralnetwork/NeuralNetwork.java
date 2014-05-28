@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
+import data.Input;
 import geneticalgorithm.Fenotype;
 import geneticalgorithm.NewBitSet;
 
@@ -15,55 +16,64 @@ public class NeuralNetwork {
     private ArrayList<NeuralLayer> neuralLayers;
 
     //TODO for testing only!
-    public NeuralNetwork()
-    {
+    public NeuralNetwork() {
     }
-    
-    public NeuralNetwork( final ArrayList<NeuralLayer> neuralLayers ){
+
+    public NeuralNetwork(final ArrayList<NeuralLayer> neuralLayers) {
         this.neuralLayers = neuralLayers;
     }
 
     /**
      * Adds up <b>Weights</b> from  all the <b>Neurons</b> from every <b>Layer</b> in the <b>Network</b>.
+     *
      * @return weights.
      */
-    /*public final ArrayList<Weights> getWeights() { // TODO
+    private final ArrayList<Weights> getWeights() {
         ArrayList<Weights> weights = new ArrayList<Weights>();
         for( NeuralLayer neuralLayer : neuralLayers )
             weights.addAll( neuralLayer.getWeights() );
         return weights;
-    }*/
-    // TODO for testing only!
-    public final NewBitSet getWeights() {
-        NewBitSet result = new NewBitSet(40);
-        System.out.println(result.realSize());
-        
-        
-        for(int i = 0; i < 40; i++)
-        {
-        	Random random = new Random();
-        	if(random.nextBoolean())
-        		result.set(i);
-        }
-        return result;
     }
-    
+
+    public final ArrayList<Double> getDoubleWeights() {
+        ArrayList<Double> weightsInDouble = new ArrayList<Double>();
+        ArrayList<Weights> allWeights = getWeights();
+        for( Weights weights : allWeights ) {
+            weightsInDouble.addAll( weights.getValues() );
+        }
+        return weightsInDouble;
+    }
+
     /**
-     * Uploads new <b>Weights</b> to the <b>neuralnetwork</b>.
+     * Uploads new <b>Weights</b> to the <b>NeuralNetwork</b>.
      */
-    public final void uploadWeights( ArrayList<Weights> weights ) {
-        Iterator<NeuralLayer> nerualLayerIterator = neuralLayers.iterator();
-        while( nerualLayerIterator.hasNext() ) {
-            nerualLayerIterator.next().uploadNewWeights( weights );
+//     public final void uploadWeights(ArrayList<Double> weights) {
+//        Iterator<NeuralLayer> neuralLayerIterator = neuralLayers.iterator();
+//        while (neuralLayerIterator.hasNext()) {
+//            neuralLayerIterator.next().uploadNewWeights(weights);
+//        }
+//    }
+
+    /**
+     * Uploads new <b>Weights</b> to the <b>NeuralNetwork</b>.
+     */
+    public final void uploadWeights(final ArrayList<Double> newWeights) {
+        ArrayList<Weights> weightsReferences = getWeights();
+        int index = 0;
+        for(Weights weights : weightsReferences) {
+            weights.set(index,
+                    newWeights.get(index++));
         }
     }
-    
-    
-    
-    // TODO for testing only!
-    public final double testFenotype(final Fenotype fenotype)
-    {
-    	Random random = new Random();
-    	return random.nextDouble();
+
+    public final int compute( final Input input ) {
+        Input tmpInput = input;
+        for( NeuralLayer neuralLayer : neuralLayers ) {
+            tmpInput = neuralLayer.compute(tmpInput);
+        }
+        if( tmpInput.get( 0 ) >= 0 )
+            return 1;
+        else
+            return -1;
     }
 }

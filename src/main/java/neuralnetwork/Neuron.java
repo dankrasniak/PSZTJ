@@ -25,7 +25,7 @@ public final class Neuron{
         while( ( i-- ) != 0 ) {
             result += ( input.get( i ) * weights.get( i ) ); // TODO Update with proper formula.
         }
-        return result;
+        return Math.tanh(result);
     }
 
     /**

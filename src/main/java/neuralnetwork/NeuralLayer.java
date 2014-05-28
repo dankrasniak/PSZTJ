@@ -1,5 +1,8 @@
 package neuralnetwork;
 
+import data.Input;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -40,5 +43,13 @@ public class NeuralLayer{
             neurons.get( index ).uploadWeights( weights.get( index ) );
             weights.remove( index );
         }
+    }
+
+    public final Input compute( final Input input ) {
+        ArrayList<Double> result = new ArrayList<Double>();
+        for( Neuron neuron : neurons ) {
+           result.add( neuron.compute( input ) );
+        }
+        return new Input( result );
     }
 }

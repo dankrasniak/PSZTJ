@@ -15,7 +15,7 @@ public class Weights {
     /**
      * @return weight values.
      */
-    public final ArrayList<Double> getWeights() {
+    public final ArrayList<Double> getValues() {
         return weights;
     }
 
