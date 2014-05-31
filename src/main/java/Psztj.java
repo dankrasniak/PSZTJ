@@ -51,7 +51,7 @@ public class Psztj {
         neuralLayers.add(new NeuralLayer(neurons));
 
         NeuralNetwork neuralNetwork = new NeuralNetwork(neuralLayers);
-        MotherNature motherNature = new MotherNature(neuralNetwork, 6, learningData);
+        MotherNature motherNature = new MotherNature(neuralNetwork, 5, learningData);
 
         /*motherNature.nextEpoch();
         System.out.println("Nowe: ");
@@ -65,8 +65,12 @@ public class Psztj {
         motherNature.nextEpoch();
         System.out.println("Nowe: ");
         motherNature.printPopulationQualities();*/
-        for(int i = 0; i < 500; i++)
-            motherNature.nextEpoch();
+        //motherNature.printPopulationQualities();
+        double mutationIntensity = 1.0;
+        for(int i = 0; i < 1000; i++) {
+            motherNature.nextEpoch(mutationIntensity);
+            mutationIntensity -= 0.001;
+        }
 
         System.out.println("Nowe: ");
         motherNature.printPopulationQualities();

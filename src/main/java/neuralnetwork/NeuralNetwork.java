@@ -1,14 +1,10 @@
 package neuralnetwork;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Random;
 
 import data.Data;
 import data.Input;
 import data.Output;
-import geneticalgorithm.Fenotype;
-import geneticalgorithm.NewBitSet;
 
 /**
  * Manages Neural transmissions.
@@ -17,18 +13,12 @@ import geneticalgorithm.NewBitSet;
 public class NeuralNetwork {
     private ArrayList<NeuralLayer> neuralLayers;
 
-    //TODO for testing only!
-    public NeuralNetwork() {
-    }
-
     public NeuralNetwork(final ArrayList<NeuralLayer> neuralLayers) {
         this.neuralLayers = neuralLayers;
     }
 
     /**
      * Adds up <b>Weights</b> from  all the <b>Neurons</b> from every <b>Layer</b> in the <b>Network</b>.
-     *
-     * @return weights.
      */
     private final ArrayList<Weights> getWeights() {
         ArrayList<Weights> weights = new ArrayList<Weights>();
@@ -45,16 +35,6 @@ public class NeuralNetwork {
         }
         return weightsInDouble;
     }
-
-    /**
-     * Uploads new <b>Weights</b> to the <b>NeuralNetwork</b>.
-     */
-//     public final void uploadWeights(ArrayList<Double> weights) {
-//        Iterator<NeuralLayer> neuralLayerIterator = neuralLayers.iterator();
-//        while (neuralLayerIterator.hasNext()) {
-//            neuralLayerIterator.next().uploadNewWeights(weights);
-//        }
-//    }
 
     /**
      * Uploads new <b>Weights</b> to the <b>NeuralNetwork</b>.

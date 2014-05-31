@@ -56,8 +56,6 @@ public class Fenotype implements Comparable<Fenotype>
 			return -1;
 		if(other.getQuality() == this.quality)
 			return 0;
-		if(other.getQuality() > this.quality)
-			return 1;
-		return 0;
+		return 1;
 	}
 }
