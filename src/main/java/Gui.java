@@ -16,14 +16,14 @@ public class Gui extends JFrame {
     private JTextField startingSelectionPression;
     private JTextField endingSelectionPression;
     private JTextField epochCount;
-    private JCheckBox eliteStrategy;
+    private JCheckBox eliteStrategyCheckBox;
     private JButton runAutomaticallyBtn;
     private JTextArea startingPopulationTextArea;
     private JTextArea currentPopulationTextArea;
-    private JCheckBox similarMatch;
-    private JTextField textField1;
-    private JTable epochResults;
-
+    private JCheckBox matchSimilarCheckBox;
+    private JTextField currentEpochNo;
+    private JButton newPopulationBtn;
+    private JTextField populationSize;
     private ApplicationManager manager;
 
     public Gui(ApplicationManager manager) {
@@ -36,6 +36,11 @@ public class Gui extends JFrame {
 
         nextEpochBtn.addActionListener(nextEpochBtnClicked);
         runAutomaticallyBtn.addActionListener(runAutomaticallyBtnClicked);
+        newPopulationBtn.addActionListener(newPopulationBtnClicked);
+    }
+
+    public void setCurrentEpochNo(String value) {
+        currentEpochNo.setText(value);
     }
 
     public void setStartingPopulationTextArea(List<Double> population) {
@@ -53,35 +58,71 @@ public class Gui extends JFrame {
         }
     }
 
+    private void setCheckboxParameters() {
+        manager.setEliteStategy(eliteStrategyCheckBox.isSelected());
+        manager.setMatchSimilar(matchSimilarCheckBox.isSelected());
+    }
+
+    private double getStartingSelectionPression() {
+        return Double.parseDouble(startingSelectionPression.getText());
+    }
+
+    private double getEndingSelectionPrecision() {
+        return Double.parseDouble(endingSelectionPression.getText());
+    }
+
+    private void runNumberParametersErrorMsg() {
+        JOptionPane.showMessageDialog(this, "Please provide valid epochs number, starting pression and ending pression!", "Failure", JOptionPane.ERROR_MESSAGE);
+    }
+
+    private void invalidPopulationSizeErrorMsg() {
+        JOptionPane.showMessageDialog(this, "Please provide valid population size!", "Failure", JOptionPane.ERROR_MESSAGE);
+    }
+
     ActionListener nextEpochBtnClicked = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
                 int iterations = Integer.parseInt(epochCount.getText());
-                double startingPression = Double.parseDouble(startingSelectionPression.getText());
-                double endingPression = Double.parseDouble(endingSelectionPression.getText());
+                double startingPression = getStartingSelectionPression();
+                double endingPression = getEndingSelectionPrecision();
+                setCheckboxParameters();
+
                 manager.runOnce(iterations, startingPression, endingPression);
             } catch (NumberFormatException ex) {
-                numberFormatErrorMsg();
+                runNumberParametersErrorMsg();
             }
         }
     };
-
     ActionListener runAutomaticallyBtnClicked = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
                 int iterations = Integer.parseInt(epochCount.getText());
-                double startingPression = Double.parseDouble(startingSelectionPression.getText());
-                double endingPression = Double.parseDouble(endingSelectionPression.getText());
+                double startingPression = getStartingSelectionPression();
+                double endingPression = getEndingSelectionPrecision();
+                setCheckboxParameters();
                 manager.runAutomatically(iterations, startingPression, endingPression);
             } catch (NumberFormatException ex) {
-                numberFormatErrorMsg();
+                runNumberParametersErrorMsg();
             }
         }
     };
 
-    private void numberFormatErrorMsg() {
-        JOptionPane.showMessageDialog(this, "Please provide valid epochs number, starting pression and ending pression!", "Failure", JOptionPane.ERROR_MESSAGE);
-    }
+    ActionListener newPopulationBtnClicked = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                int populationQuantity = Integer.parseInt(populationSize.getText());
+                runAutomaticallyBtn.setEnabled(true);
+                nextEpochBtn.setEnabled(true);
+                startingPopulationTextArea.setText("");
+                currentPopulationTextArea.setText("");
+                manager.createMotherNature(populationQuantity);
+
+            } catch (NumberFormatException ex) {
+                invalidPopulationSizeErrorMsg();
+            }
+        }
+    };
 }
