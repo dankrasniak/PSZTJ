@@ -29,6 +29,7 @@ public class MotherNature
 	{
 		this.neuralNetwork = neuralNetwork;
         this.learningData = learningData;
+        this.testingData = testingData;
         this.eliteStrategy = true;
 		this.population = new LinkedList<Fenotype>();
 		this.offsprings = new LinkedList<Fenotype>();
@@ -103,7 +104,7 @@ public class MotherNature
         for(Fenotype fenotype : population)
         {
             neuralNetwork.uploadWeights(fenotype.getGenotype());
-            qualities.add(rateOutputs(neuralNetwork.computeData(learningData)));
+            qualities.add(rateOutputs(neuralNetwork.computeData(testingData)));
         }
         return qualities;
     }
@@ -169,6 +170,17 @@ public class MotherNature
     {
         this.matchSimilar = matchSimilar;
     }
+
+    public ArrayList<Double> getQualities()
+    {
+        ArrayList<Double> qualities = new ArrayList<Double>();
+        for(Fenotype fenotype : population)
+        {
+            qualities.add(fenotype.getQuality());
+        }
+        return qualities;
+    }
+
 
     /**
      * Adds one offspring to offspring array.
