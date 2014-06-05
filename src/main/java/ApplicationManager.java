@@ -87,7 +87,7 @@ public class ApplicationManager {
 
     public void step(double pression) {
         motherNature.nextEpoch();
-        motherNature.setSelectionPressure(motherNature.getSelectionPressure() + pression);
+        motherNature.setSelectionPressure(motherNature.getSelectionPression() + pression);
         applicationGui.setCurrentPopulationTextArea(motherNature.getQualities());
     }
 
