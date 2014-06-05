@@ -78,6 +78,8 @@ public class Psztj {
         System.out.println("Wagi: ");
         motherNature.printWeights();
 
+        Gui applicationGui = new Gui();
+
 
     }
 }
