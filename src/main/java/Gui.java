@@ -13,6 +13,15 @@ public class Gui extends JFrame{
     private JButton nextEpoch;
     private JProgressBar progress;
     private JPanel root;
+    private JTextField startingSelectionPression;
+    private JTextField endingSelectionPression;
+    private JTextField epochCount;
+    private JCheckBox eliteStrategy;
+    private JButton run;
+    private JTextArea textArea1;
+    private JTextArea textArea2;
+    private JCheckBox similarMatch;
+    private JTextField textField1;
     private JTable epochResults;
 
     public Gui() {
@@ -20,23 +29,7 @@ public class Gui extends JFrame{
         setContentPane(root);
         pack();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        createUIComponents();
         setVisible(true);
     }
 
-    private void createUIComponents() {
-        Object[][] data = {{1,1,1},{2,2,2},{3,3,3},{4,4,4}};
-        String[] columnNames = {"Column 1","Column 2","Column 3"};
-        epochResults.setModel(new DefaultTableModel(data, columnNames));
-        nextEpoch.addActionListener(new OnClickAction());
-    }
-
-   private class OnClickAction implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            progress.setValue((progress.getValue()) + 1);
-            progress.repaint();
-        }
-    }
 }

@@ -1,46 +1,196 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="Gui">
-  <grid id="27dc6" binding="root" layout-manager="GridLayoutManager" row-count="4" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-    <margin top="0" left="0" bottom="0" right="0"/>
+  <grid id="27dc6" binding="root" layout-manager="GridLayoutManager" row-count="12" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="15" left="15" bottom="15" right="15"/>
     <constraints>
-      <xy x="20" y="20" width="899" height="200"/>
+      <xy x="20" y="20" width="800" height="499"/>
     </constraints>
     <properties>
       <background color="-6710887"/>
       <foreground color="-6710785"/>
-      <minimumSize width="200" height="200"/>
-      <preferredSize width="200" height="200"/>
+      <maximumSize width="800" height="400"/>
+      <minimumSize width="800" height="400"/>
+      <opaque value="false"/>
+      <preferredSize width="800" height="400"/>
     </properties>
     <border type="none" title="ZS.AE.1"/>
     <children>
-      <component id="2143e" class="javax.swing.JProgressBar" binding="progress">
+      <component id="d10c4" class="javax.swing.JTextArea" binding="textArea2" default-binding="true">
         <constraints>
-          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="1" column="4" row-span="11" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="50"/>
+          </grid>
         </constraints>
         <properties/>
       </component>
-      <hspacer id="52ec2">
+      <component id="8e35d" class="javax.swing.JTextArea" binding="textArea1" default-binding="true">
         <constraints>
-          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="1" column="3" row-span="11" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="50"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="c5671" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <alignmentY value="0.0"/>
+          <text value="Starting:"/>
+        </properties>
+      </component>
+      <component id="b6693" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <alignmentY value="0.0"/>
+          <text value="Ending:"/>
+        </properties>
+      </component>
+      <component id="da2e7" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <opaque value="true"/>
+          <text value="# Epochs:"/>
+        </properties>
+      </component>
+      <hspacer id="25d40">
+        <constraints>
+          <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
       </hspacer>
-      <component id="3ab08" class="javax.swing.JButton" binding="nextEpoch">
+      <component id="dbe5a" class="javax.swing.JLabel">
         <constraints>
-          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Starting population:"/>
+        </properties>
+      </component>
+      <component id="72df9" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Current population:"/>
+        </properties>
+      </component>
+      <hspacer id="56a80">
+        <constraints>
+          <grid row="10" column="2" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </hspacer>
+      <component id="147e7" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Selection pression:"/>
+        </properties>
+      </component>
+      <component id="5bf18" class="javax.swing.JTextField" binding="startingSelectionPression">
+        <constraints>
+          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="132" height="26"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="b019f" class="javax.swing.JTextField" binding="endingSelectionPression">
+        <constraints>
+          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="132" height="26"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="50857" class="javax.swing.JCheckBox" binding="similarMatch">
+        <constraints>
+          <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="132" height="24"/>
+          </grid>
+        </constraints>
+        <properties>
+          <actionCommand value=""/>
+          <label value="Match Similar"/>
+          <text value="Match Similar"/>
+        </properties>
+      </component>
+      <component id="86d1e" class="javax.swing.JCheckBox" binding="eliteStrategy">
+        <constraints>
+          <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="132" height="24"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="Elite Strategy"/>
+        </properties>
+      </component>
+      <vspacer id="2fc19">
+        <constraints>
+          <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false">
+            <preferred-size width="132" height="14"/>
+          </grid>
+        </constraints>
+      </vspacer>
+      <vspacer id="3eb5f">
+        <constraints>
+          <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false">
+            <preferred-size width="132" height="14"/>
+          </grid>
+        </constraints>
+      </vspacer>
+      <component id="11abe" class="javax.swing.JButton" binding="run">
+        <constraints>
+          <grid row="8" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="132" height="34"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="Run automatically"/>
+        </properties>
+      </component>
+      <component id="5ff6e" class="javax.swing.JButton" binding="nextEpoch">
+        <constraints>
+          <grid row="9" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="132" height="34"/>
+          </grid>
         </constraints>
         <properties>
           <text value="Next epoch"/>
         </properties>
       </component>
-      <component id="62e7" class="javax.swing.JTable" binding="epochResults">
+      <component id="f281f" class="javax.swing.JTextField" binding="epochCount">
         <constraints>
-          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="50"/>
+          <grid row="10" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="132" height="26"/>
           </grid>
         </constraints>
         <properties>
-          <showVerticalLines value="true"/>
+          <text value=""/>
         </properties>
+      </component>
+      <component id="cda64" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="11" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Epoch no.:"/>
+        </properties>
+      </component>
+      <component id="f4a3" class="javax.swing.JTextField" binding="textField1" default-binding="true">
+        <constraints>
+          <grid row="11" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="132" height="26"/>
+          </grid>
+        </constraints>
+        <properties/>
       </component>
     </children>
   </grid>
