@@ -52,7 +52,7 @@ public class Psztj {
         neuralLayers.add(new NeuralLayer(neurons));
 
         NeuralNetwork neuralNetwork = new NeuralNetwork(neuralLayers);
-        MotherNature motherNature = new MotherNature(neuralNetwork, 20, learningData);
+        MotherNature motherNature = new MotherNature(neuralNetwork, 20, learningData, testingData);
         System.out.println("Poczatkowe: ");
         motherNature.printPopulationQualities();
         /*motherNature.nextEpoch(0.5);
@@ -75,8 +75,13 @@ public class Psztj {
 
         System.out.println("Nowe: ");
         motherNature.printPopulationQualities();
-        System.out.println("Wagi: ");
-        motherNature.printWeights();
+
+        System.out.println("Przetestowane: ");
+        ArrayList<Double> qualities = (ArrayList)motherNature.getTestedQualities();
+        for(Double quality : qualities)
+        {
+            System.out.println(quality);
+        }
 
         Gui applicationGui = new Gui();
 
