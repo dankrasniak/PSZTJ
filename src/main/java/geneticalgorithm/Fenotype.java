@@ -8,17 +8,19 @@ import java.util.Random;
 public class Fenotype implements Comparable<Fenotype>
 {
 	private ArrayList<Double> genotype;
-	
+    private ArrayList<Double> distribution;
+
+
 	/**
 	 * Objective function
 	 */
 	private double quality;
 	
 	
-	public Fenotype(ArrayList<Double> genotype)
+	public Fenotype(final ArrayList<Double> genotype, final ArrayList<Double> distribution)
 	{
-		// generate random genotype
-		this.genotype = genotype;//new ArrayList<Double>();
+		this.genotype = genotype;
+        this.distribution = distribution;
 		quality = 0;
 	}
 	
@@ -34,24 +36,39 @@ public class Fenotype implements Comparable<Fenotype>
 
 	public Double getGene(final int index)
 	{
-        //TODO
 		return genotype.get(index);
 	}
 	
 	public void setGene(final int index, final Double value)
 	{
-        //TODO
 		genotype.set(index, value);
 	}
-	
-	public ArrayList<Double> getGenotype()
-	{
-		return genotype;
-	}
 
-	@Override
+    public Double getDistributionFactor(final int index)
+    {
+        return distribution.get(index);
+    }
+
+    public void setDistributionFactor(final int index, final Double factor)
+    {
+        distribution.set(index, factor);
+    }
+
+    public ArrayList<Double> getGenotype()
+    {
+        return genotype;
+    }
+
+    public ArrayList<Double> getDistribution()
+    {
+        return distribution;
+    }
+
+    @Override
 	public int compareTo(final Fenotype other)
 	{
+        if(other == null)
+            return 0;
 		if(other.getQuality() < this.quality)
 			return -1;
 		if(other.getQuality() == this.quality)

@@ -16,18 +16,25 @@ public class MotherNature
 	private List<Fenotype> population;
 	private List<Fenotype> offsprings;
 	private NeuralNetwork neuralNetwork;
-	// Used in getParent() for unlinear randoming
-	private double populationQualitySum;
 	private Data learningData;
     private boolean eliteStrategy;
-	
-	public MotherNature(final NeuralNetwork neuralNetwork, final int populationSize, final Data learningData)
+    // Recommended between 0.5 and 1.5
+    private Double selectionPressure;
+    // Used for comparing genotypes
+    private Double lowestGene;
+    private Double highestGene;
+
+
+    public MotherNature(final NeuralNetwork neuralNetwork, final int populationSize, final Data learningData)
 	{
 		this.neuralNetwork = neuralNetwork;
         this.learningData = learningData;
         this.eliteStrategy = true;
 		this.population = new ArrayList<Fenotype>();
 		this.offsprings = new ArrayList<Fenotype>();
+        this.highestGene = 1.0;
+        this.lowestGene = -1.0;
+        this.selectionPressure = 1.0;
 		// Get actual weights of neural network, which will tell by the way about quantity of all weights.
 		ArrayList<Double> startingWeights = neuralNetwork.getDoubleWeights();
 		
@@ -40,24 +47,21 @@ public class MotherNature
             neuralNetwork.uploadWeights(tmp.getGenotype());
             receivedOutputs = neuralNetwork.computeData(learningData);
 			tmp.setQuality(rateOutputs(receivedOutputs));
-            System.out.println(tmp.getQuality());
 			population.add(tmp);
 		}
 		Collections.sort(population);
-		calcPopulationQualitySum();
 	}
 	
 	
-	public void nextEpoch(final double mutationIntensity)
+	public void nextEpoch()
 	{
-        if(mutationIntensity < 0 || mutationIntensity > 1){
-            //TODO
-            throw new RuntimeException();
-        }
+        this.highestGene = 1.0;
+        this.lowestGene = -1.0;
 		int populationSize = population.size();
+        offsprings = new ArrayList<Fenotype>();
 		for(int i = 0; i < populationSize; i++)
 		{
-			reproduce(mutationIntensity);
+			reproduce();
 		}
 		population.addAll(offsprings);
 		Collections.sort(population);
@@ -70,8 +74,7 @@ public class MotherNature
             population.remove(0);
             populationSize--;
         }
-		
-		calcPopulationQualitySum();
+
 		// We choose parents for our next epoch
 		for(int i = 0; i < populationSize; i++)
 		{
@@ -79,20 +82,7 @@ public class MotherNature
 		}
 		population = newPopulation;
 		Collections.sort(population);
-		calcPopulationQualitySum();
 	}
-
-
-    public void setEliteStrategy(final boolean eliteStrategy)
-    {
-        this.eliteStrategy = eliteStrategy;
-    }
-
-
-    public boolean getEliteStrategy()
-    {
-        return eliteStrategy;
-    }
 
 
     public List<Double> getPopulationQualities()
@@ -134,75 +124,81 @@ public class MotherNature
         }
     }
 
+    public void setEliteStrategy(boolean eliteStrategy)
+    {
+        this.eliteStrategy = eliteStrategy;
+    }
 
-    private void reproduce(final double mutationIntensity)
+    public boolean getEliteStrategy()
+    {
+        return eliteStrategy;
+    }
+
+    public Double getSelectionPressure() {
+        return selectionPressure;
+    }
+
+    public void setSelectionPressure(Double selectionPressure) {
+        this.selectionPressure = selectionPressure;
+    }
+
+    private void reproduce()
 	{
 		Random random = new Random();
 		Fenotype wife = getParent(true);
 		Fenotype husband = getParent(true);
-        double similarity;
-        //TODO maybe something more elegant
-		for(int i = 0; i < 10; i++)
-		{
-            similarity = compareFenotypes(wife, husband);
-			if(similarity > (0.7-mutationIntensity/2) && similarity != 1)
-			{
-				break;
-			}
-			husband = getParent(true);
-		}
-		
-		Fenotype offspring = generateOffspring(wife, husband, neuralNetwork, mutationIntensity, mutationIntensity/2);
+		Fenotype offspring = generateOffspring(wife, husband, neuralNetwork);
 		offsprings.add(offspring);
 	}
-	
-	
-	private Fenotype getParent(boolean withReturning)
-	{
-		Random random = new Random();
-		double randomed = random.nextDouble();
-		double tmpSum = 0;
-		for(int i = 0; i < population.size(); i++)
-		{
-			tmpSum += population.get(i).getQuality() / populationQualitySum;
-			if(tmpSum >= randomed)
-			{
-				Fenotype result = population.get(i);
-				if(!withReturning)
-				{
-					populationQualitySum -= result.getQuality();
-					population.remove(i);
-				}
-				return result;
-			}
-		}
-		return population.get(population.size()-1);
-	}
-	
-	
-	/**
-	 * Used in getParent() for unlinear randoming
-	 */
-	private void calcPopulationQualitySum()
-	{
-		populationQualitySum = 0;
-		for(Fenotype fenotype : population)
-		{
-			populationQualitySum += fenotype.getQuality();
-		}
-	}
-	
+
+
+    private Fenotype getParent(boolean withReturning)
+    {
+        Random random = new Random();
+        double randomized = Math.abs(random.nextGaussian()/selectionPressure) % 1;
+        int fenotypeIndex = (int)(randomized*population.size());
+        Fenotype result = population.get(fenotypeIndex);
+        if(!withReturning)
+        {
+            population.remove(fenotypeIndex);
+        }
+        return result;
+    }
+
+    private Fenotype getParent(Fenotype partner)
+    {
+        Random random = new Random();
+        Double populationQuality = 0.0;
+        ArrayList<Double> similarities = new ArrayList<Double>();
+        for(int i = 0; i < population.size(); i++)
+        {
+            similarities.add(compareFenotypes(partner, population.get(i)));
+            populationQuality += Math.pow(population.get(i).getQuality(), 2) * similarities.get(i);
+        }
+        double randomized = random.nextDouble();
+        double tmpSum = 0;
+        for(int i = 0; i < population.size(); i++)
+        {
+            tmpSum += Math.pow(population.get(i).getQuality(), 2) * similarities.get(i) / populationQuality;
+            if(tmpSum >= randomized)
+            {
+                return population.get(i);
+            }
+        }
+        return population.get(population.size()-1);
+    }
+
 	
 	/**
 	 * FOR EXPERIMENTAL USAGE - not sure if it will reduce runtime
 	 * Calculates similarity of two Fenotypes using the following formula:<br>
 	 * <br>
-	 * 					|| x - y ||^2		<br>
-	 * 			1  -  ----------------		<br>
-	 * 						c^2				<br>
+	 * 					| x - y |	    	<br>
+	 * 			1  -  ------------- 		<br>
+	 * 					    c				<br>
 	 * <br>
 	 * Where x is single weight of first fenotype, y is from second fenotype
-	 * and c is maximal difference between weights which is... about 2
+	 * and c is maximal difference between weights which is equal (highestGene - lowestGene)
 	 * 
 	 */
 	private double compareFenotypes(final Fenotype first, final Fenotype second)
@@ -213,41 +209,52 @@ public class MotherNature
 			return result;
 		}
 		Double firstWeight;
-		Double secondWeight;
-		for(int i = 0; i < first.getGenotype().size(); i++)
+        Double secondWeight;
+        Double tmpRes;
+        for(int i = 0; i < first.getGenotype().size(); i++)
 		{
 			firstWeight = first.getGene(i);
 			secondWeight = second.getGene(i);
-			result += ( 1 - ( (double)Math.pow((Math.abs(firstWeight - secondWeight)), 2) / 4.0 ) );
-		}
-		return result / (first.getGenotype().size());
+            tmpRes = ( 1 - ( (double)(Math.abs(firstWeight - secondWeight)) / (highestGene - lowestGene) ) );
+			result += tmpRes;
+        }
+        return result / (first.getGenotype().size());
 	}
 
 
-    private Fenotype generateOffspring(final Fenotype wife, final Fenotype husband, final NeuralNetwork neuralNetwork,
-        final double mutationProbability, final double mutationStrength)
+    private Fenotype generateOffspring(final Fenotype wife, final Fenotype husband, final NeuralNetwork neuralNetwork)
     {
-        ArrayList<Double> offspringGenotype = new ArrayList<Double>();
+        if(wife.getGenotype().size() != husband.getGenotype().size())
+        {
+            throw new RuntimeException();
+        }
+        ArrayList<Double> genotype = new ArrayList<Double>();
+        ArrayList<Double> distribution = new ArrayList<Double>();
         Random random = new Random();
+        int n = wife.getGenotype().size();
+        Double distributionFactor;
         Double newGene;
+        Double globalXi = random.nextGaussian();
+        Double tau = 1 / (Math.sqrt(2 * Math.sqrt(n)));
+        Double tauPrim = 1 / (Math.sqrt(2 * n));
         for(int i = 0; i < wife.getGenotype().size(); i++)
         {
-            // If we randomed (50%) true or husband's genotype is exceeded, we take wife's gene
-            if(random.nextBoolean() || i >= husband.getGenotype().size())
+            newGene = (wife.getGene(i)+husband.getGene(i)) / 2;
+            distributionFactor = (wife.getDistributionFactor(i)+husband.getDistributionFactor(i)) / 2;
+            distributionFactor *= Math.exp(tauPrim*globalXi + tau*random.nextGaussian());
+            newGene += distributionFactor*random.nextGaussian();
+            genotype.add(newGene);
+            distribution.add(distributionFactor);
+            if(newGene > this.highestGene)
             {
-                newGene =  wife.getGene(i);
+                this.highestGene = newGene;
             }
-            else
+            if(newGene < this.lowestGene)
             {
-                newGene =  husband.getGene(i);
+                this.lowestGene = newGene;
             }
-            if(random.nextDouble() <= mutationProbability)
-            {
-                newGene += newGene*(random.nextDouble() - 0.5)*mutationStrength;
-            }
-            offspringGenotype.add(newGene);
         }
-        Fenotype offspring = new Fenotype(offspringGenotype);
+        Fenotype offspring = new Fenotype(genotype, distribution);
         neuralNetwork.uploadWeights(offspring.getGenotype());
         ArrayList<Output> receivedOutputs = neuralNetwork.computeData(learningData);
         offspring.setQuality(rateOutputs(receivedOutputs));
@@ -258,12 +265,14 @@ public class MotherNature
     private Fenotype generateRandomFenotype(int genotypeSize)
     {
         ArrayList<Double> genotype = new ArrayList<Double>();
+        ArrayList<Double> distribution = new ArrayList<Double>();
         Random random = new Random();
         for(int i = 0; i < genotypeSize; i++)
         {
-            genotype.add(random.nextDouble() - 0.5);
+            genotype.add(random.nextDouble()*2 - 1.0);
+            distribution.add(1.0);
         }
-        return new Fenotype(genotype);
+        return new Fenotype(genotype, distribution);
     }
 
 

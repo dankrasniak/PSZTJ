@@ -9,6 +9,7 @@ import neuralnetwork.Weights;
 import parser.Parser;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 /**
@@ -51,25 +52,25 @@ public class Psztj {
         neuralLayers.add(new NeuralLayer(neurons));
 
         NeuralNetwork neuralNetwork = new NeuralNetwork(neuralLayers);
-        MotherNature motherNature = new MotherNature(neuralNetwork, 5, learningData);
-
-        /*motherNature.nextEpoch();
+        MotherNature motherNature = new MotherNature(neuralNetwork, 20, learningData);
+        System.out.println("Poczatkowe: ");
+        motherNature.printPopulationQualities();
+        /*motherNature.nextEpoch(0.5);
         System.out.println("Nowe: ");
         motherNature.printPopulationQualities();
-        motherNature.nextEpoch();
+        motherNature.nextEpoch(0.5);
         System.out.println("Nowe: ");
         motherNature.printPopulationQualities();
-        motherNature.nextEpoch();
+        motherNature.nextEpoch(0.5);
         System.out.println("Nowe: ");
         motherNature.printPopulationQualities();
-        motherNature.nextEpoch();
+        motherNature.nextEpoch(0.5);
         System.out.println("Nowe: ");
         motherNature.printPopulationQualities();*/
         //motherNature.printPopulationQualities();
         double mutationIntensity = 1.0;
         for(int i = 0; i < 1000; i++) {
-            motherNature.nextEpoch(mutationIntensity);
-            mutationIntensity -= 0.001;
+            motherNature.nextEpoch();
         }
 
         System.out.println("Nowe: ");
