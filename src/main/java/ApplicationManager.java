@@ -9,6 +9,7 @@ import neuralnetwork.Weights;
 import parser.Parser;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class ApplicationManager {
@@ -102,6 +103,10 @@ public class ApplicationManager {
         motherNature = new MotherNature(neuralNetwork, populationCount , learningData, testingData);
         applicationGui.setStartingPopulationTextArea(motherNature.getQualities());
         stepCounter = 0;
+    }
+
+    public List<Double> getTestedQualities() {
+        return motherNature.getTestedQualities();
     }
 
     public static void main(String[] args) {

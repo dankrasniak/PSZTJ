@@ -9,7 +9,6 @@ import java.util.List;
 public class Gui extends JFrame {
 
     private static final String title = "Podstawy Sztucznej Inteligencji";
-
     private JButton nextEpochBtn;
     private JProgressBar progress;
     private JPanel root;
@@ -24,8 +23,8 @@ public class Gui extends JFrame {
     private JTextField currentEpochNo;
     private JButton newPopulationBtn;
     private JTextField populationSize;
+    private JButton testPopulationBtn;
     private ApplicationManager manager;
-
     public Gui(ApplicationManager manager) {
         super(title);
         this.manager = manager;
@@ -37,6 +36,7 @@ public class Gui extends JFrame {
         nextEpochBtn.addActionListener(nextEpochBtnClicked);
         runAutomaticallyBtn.addActionListener(runAutomaticallyBtnClicked);
         newPopulationBtn.addActionListener(newPopulationBtnClicked);
+        testPopulationBtn.addActionListener(testPopulationBtnClicked);
     }
 
     public void setCurrentEpochNo(String value) {
@@ -108,7 +108,6 @@ public class Gui extends JFrame {
             }
         }
     };
-
     ActionListener newPopulationBtnClicked = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -123,6 +122,12 @@ public class Gui extends JFrame {
             } catch (NumberFormatException ex) {
                 invalidPopulationSizeErrorMsg();
             }
+        }
+    };
+    ActionListener testPopulationBtnClicked = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            setCurrentPopulationTextArea(manager.getTestedQualities());
         }
     };
 }
