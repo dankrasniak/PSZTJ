@@ -1,7 +1,5 @@
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.List;
 
 /**
  * Created by lukasz on 5/31/14.
@@ -18,8 +16,8 @@ public class Gui extends JFrame{
     private JTextField epochCount;
     private JCheckBox eliteStrategy;
     private JButton run;
-    private JTextArea textArea1;
-    private JTextArea textArea2;
+    private JTextArea startingPopulationTextArea;
+    private JTextArea currentPopulationTextArea;
     private JCheckBox similarMatch;
     private JTextField textField1;
     private JTable epochResults;
@@ -32,4 +30,12 @@ public class Gui extends JFrame{
         setVisible(true);
     }
 
+
+
+    public void setPopulationTextArea(JTextArea area, List<Double> startingPopulation) {
+        area.setText("");
+        for (Double fenotype : startingPopulation) {
+            area.append(fenotype + "\n");
+        }
+    }
 }

@@ -9,7 +9,6 @@ import neuralnetwork.Weights;
 import parser.Parser;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Random;
 
 /**
@@ -17,6 +16,9 @@ import java.util.Random;
  */
 public class Psztj {
     public static void main(String[] args) {
+        Gui applicationGui = new Gui();
+        
+
         Parser parser = new Parser();
         Data data = parser.getData();
         Data learningData = new Data();
@@ -24,7 +26,7 @@ public class Psztj {
         ArrayList<Input> inputs = data.getInputs();
         ArrayList<Output> outputs = data.getOutputs();
         for(int i = 0; i < inputs.size(); i++){
-            if(i < 0.7*inputs.size()) {
+            if(i < 0.8*inputs.size()) {
                 learningData.inputData(inputs.get(i), outputs.get(i));
             } else {
                 testingData.inputData(inputs.get(i), outputs.get(i));
@@ -69,7 +71,7 @@ public class Psztj {
         motherNature.printPopulationQualities();*/
         //motherNature.printPopulationQualities();
         double mutationIntensity = 1.0;
-        for(int i = 0; i < 100; i++) {
+        for(int i = 0; i < 1000; i++) {
             motherNature.nextEpoch();
         }
 
@@ -83,27 +85,7 @@ public class Psztj {
             System.out.println(quality);
         }
 
-        System.out.println("Learning data:");
-        for(Output output : learningData.getOutputs())
-        {
-            if(output.getOutput())
-                System.out.print("1");
-            else
-                System.out.print("0");
-        }
-        System.out.println();
-        System.out.println("Testing data:");
-        for(Output output : testingData.getOutputs())
-        {
-            if(output.getOutput())
-                System.out.print("1");
-            else
-                System.out.print("0");
-        }
 
-
-
-        //Gui applicationGui = new Gui();
 
 
     }

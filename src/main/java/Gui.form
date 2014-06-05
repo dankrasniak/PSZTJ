@@ -15,21 +15,25 @@
     </properties>
     <border type="none" title="ZS.AE.1"/>
     <children>
-      <component id="d10c4" class="javax.swing.JTextArea" binding="textArea2" default-binding="true">
+      <component id="d10c4" class="javax.swing.JTextArea" binding="currentPopulationTextArea">
         <constraints>
           <grid row="1" column="4" row-span="11" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="50"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <editable value="false"/>
+        </properties>
       </component>
-      <component id="8e35d" class="javax.swing.JTextArea" binding="textArea1" default-binding="true">
+      <component id="8e35d" class="javax.swing.JTextArea" binding="startingPopulationTextArea">
         <constraints>
           <grid row="1" column="3" row-span="11" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="50"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <editable value="false"/>
+        </properties>
       </component>
       <component id="c5671" class="javax.swing.JLabel">
         <constraints>
