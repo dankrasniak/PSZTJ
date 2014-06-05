@@ -9,34 +9,28 @@ import neuralnetwork.Weights;
 import parser.Parser;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class ApplicationManager {
 
-    public MotherNature motherNature;
-    public Gui applicationGui;
+    private MotherNature motherNature;
+    private  Gui applicationGui;
+    private  NeuralNetwork neuralNetwork;
+    private Data learningData = new Data();
+    private Data testingData = new Data();
+    private int stepCounter = 0;
 
     public ApplicationManager() {
+        parseData();
+        neuralNetwork = new NeuralNetwork(createNeuralLayers());
+        applicationGui = new Gui(this);
+    }
 
-        Parser parser = new Parser();
-        Data data = parser.getData();
-        Data learningData = new Data();
-        Data testingData = new Data();
-
-        ArrayList<Input> inputs = data.getInputs();
-        ArrayList<Output> outputs = data.getOutputs();
-
-        for (int i = 0; i < inputs.size(); i++) {
-            if (i < 0.8 * inputs.size()) {
-                learningData.inputData(inputs.get(i), outputs.get(i));
-            } else {
-                testingData.inputData(inputs.get(i), outputs.get(i));
-            }
-        }
-
+    private ArrayList<NeuralLayer> createNeuralLayers() {
         Random random = new Random();
-        ArrayList<Double> weights;
         ArrayList<Neuron> neurons = new ArrayList<Neuron>();
+        ArrayList<Double> weights;
         ArrayList<NeuralLayer> neuralLayers = new ArrayList<NeuralLayer>();
         for (int i = 0; i < 3; i++) {
             weights = new ArrayList<Double>();
@@ -53,38 +47,37 @@ public class ApplicationManager {
         }
         neurons.add(new Neuron(new Weights(weights)));
         neuralLayers.add(new NeuralLayer(neurons));
+        return neuralLayers;
+    }
 
-        NeuralNetwork neuralNetwork = new NeuralNetwork(neuralLayers);
-        motherNature = new MotherNature(neuralNetwork, 20, learningData, testingData);
-        System.out.println("Poczatkowe: ");
-        motherNature.printPopulationQualities();
+    private void parseData() {
+        Parser parser = new Parser();
+        Data data = parser.getData();
 
-//        for(int i = 0; i < 1000; i++) {
-//            motherNature.nextEpoch();
-//        }
+        ArrayList<Input> inputs = data.getInputs();
+        ArrayList<Output> outputs = data.getOutputs();
 
-        System.out.println("Nowe: ");
-        motherNature.printPopulationQualities();
-
-        System.out.println("Przetestowane: ");
-        ArrayList<Double> qualities = (ArrayList) motherNature.getTestedQualities();
-        for (Double quality : qualities) {
-            System.out.println(quality);
+        for (int i = 0; i < inputs.size(); i++) {
+            if (i < 0.8 * inputs.size()) {
+                learningData.inputData(inputs.get(i), outputs.get(i));
+            } else {
+                testingData.inputData(inputs.get(i), outputs.get(i));
+            }
         }
-
-        applicationGui = new Gui(this);
-        applicationGui.setStartingPopulationTextArea(motherNature.getQualities());
     }
 
     public void runAutomatically(int iterations, double startingPression, double endingPression) {
         double pression = calculatePression(iterations, startingPression, endingPression);
         for (int i = 0; i < iterations; i++) {
             step(pression);
+            applicationGui.setCurrentEpochNo(i + 1 + "/" + iterations);
         }
     }
 
     public void runOnce(int iterations, double startingPression, double endingPression) {
         double pression = calculatePression(iterations, startingPression, endingPression);
+        step(pression);
+        applicationGui.setCurrentEpochNo("*/" + iterations);
 
     }
 
@@ -96,6 +89,24 @@ public class ApplicationManager {
         motherNature.nextEpoch();
         motherNature.setSelectionPressure(motherNature.getSelectionPressure() + pression);
         applicationGui.setCurrentPopulationTextArea(motherNature.getQualities());
+    }
+
+    public void setMatchSimilar(boolean value) {
+        motherNature.setMatchSimilar(value);
+    }
+
+    public void setEliteStategy(boolean value) {
+        motherNature.setEliteStrategy(value);
+    }
+
+    public void createMotherNature(int populationCount) {
+        motherNature = new MotherNature(neuralNetwork, populationCount , learningData, testingData);
+        applicationGui.setStartingPopulationTextArea(motherNature.getQualities());
+        stepCounter = 0;
+    }
+
+    public List<Double> getTestedQualities() {
+        return motherNature.getTestedQualities();
     }
 
     public static void main(String[] args) {

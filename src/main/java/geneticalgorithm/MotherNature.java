@@ -280,7 +280,7 @@ public class MotherNature
 		{
 			firstWeight = first.getGene(i);
 			secondWeight = second.getGene(i);
-            tmpRes = ( 1 - ( (double)(Math.abs(firstWeight - secondWeight)) / (highestGene - lowestGene) ) );
+            tmpRes = ( 1 - ( Math.abs(firstWeight - secondWeight) / (highestGene - lowestGene) ) );
 			result += tmpRes;
         }
         return result / (first.getGenotype().size());
