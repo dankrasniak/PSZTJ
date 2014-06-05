@@ -17,7 +17,7 @@ public class MotherNature
     private Data testingData;
     private boolean eliteStrategy;
     // Recommended between 0.5 and 1.5
-    private Double selectionPressure;
+    private Double selectionPression;
     private boolean matchSimilar;
     // Used for comparing genotypes
     private Double lowestGene;
@@ -35,7 +35,7 @@ public class MotherNature
 		this.offsprings = new LinkedList<Fenotype>();
         this.highestGene = 1.0;
         this.lowestGene = -1.0;
-        this.selectionPressure = 1.0;
+        this.selectionPression = 1.0;
         this.matchSimilar = true;
 		// Get actual weights of neural network, which will tell by the way about quantity of all weights.
 		ArrayList<Double> startingWeights = neuralNetwork.getDoubleWeights();
@@ -148,16 +148,16 @@ public class MotherNature
         return eliteStrategy;
     }
 
-    public Double getSelectionPressure()
+    public Double getSelectionPression()
     {
-        return selectionPressure;
+        return selectionPression;
     }
 
-    public void setSelectionPressure(Double selectionPressure)
+    public void setSelectionPressure(Double selectionPression)
     {
-        if(selectionPressure > 0.0)
+        if(selectionPression > 0.0)
         {
-            this.selectionPressure = selectionPressure;
+            this.selectionPression = selectionPression;
         }
     }
 
@@ -206,7 +206,7 @@ public class MotherNature
     private Fenotype getParent(boolean withReturning)
     {
         Random random = new Random();
-        double randomized = Math.abs(random.nextGaussian()/selectionPressure) % 1;
+        double randomized = Math.abs(random.nextGaussian()/selectionPression) % 1;
         int fenotypeIndex = (int)(randomized*population.size());
         Fenotype result = population.get(fenotypeIndex);
         if(!withReturning)
