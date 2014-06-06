@@ -68,17 +68,18 @@ public class ApplicationManager {
 
     public void runAutomatically(int iterations, double startingPression, double endingPression) {
         double pression = calculatePression(iterations, startingPression, endingPression);
-        for (int i = 0; i < iterations; i++) {
+        for (int i = stepCounter; i < iterations; i++) {
             step(pression);
-            applicationGui.setCurrentEpochNo(i + 1 + "/" + iterations);
+            applicationGui.setCurrentEpochNo((++stepCounter) + "/" + iterations);
+            applicationGui.repaint();
         }
     }
 
     public void runOnce(int iterations, double startingPression, double endingPression) {
         double pression = calculatePression(iterations, startingPression, endingPression);
         step(pression);
-        applicationGui.setCurrentEpochNo("*/" + iterations);
-
+        applicationGui.setCurrentEpochNo((++stepCounter) + "/" + iterations);
+        applicationGui.repaint();
     }
 
     private double calculatePression(int iterations, double startingPression, double endingPression) {

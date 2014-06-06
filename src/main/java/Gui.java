@@ -87,7 +87,7 @@ public class Gui extends JFrame {
                 double startingPression = getStartingSelectionPression();
                 double endingPression = getEndingSelectionPrecision();
                 setCheckboxParameters();
-
+                epochCount.setEditable(false);
                 manager.runOnce(iterations, startingPression, endingPression);
             } catch (NumberFormatException ex) {
                 runNumberParametersErrorMsg();
@@ -102,6 +102,7 @@ public class Gui extends JFrame {
                 double startingPression = getStartingSelectionPression();
                 double endingPression = getEndingSelectionPrecision();
                 setCheckboxParameters();
+                epochCount.setEditable(false);
                 manager.runAutomatically(iterations, startingPression, endingPression);
             } catch (NumberFormatException ex) {
                 runNumberParametersErrorMsg();
@@ -115,10 +116,11 @@ public class Gui extends JFrame {
                 int populationQuantity = Integer.parseInt(populationSize.getText());
                 runAutomaticallyBtn.setEnabled(true);
                 nextEpochBtn.setEnabled(true);
+                testPopulationBtn.setEnabled(true);
+                epochCount.setEditable(true);
                 startingPopulationTextArea.setText("");
                 currentPopulationTextArea.setText("");
                 manager.createMotherNature(populationQuantity);
-
             } catch (NumberFormatException ex) {
                 invalidPopulationSizeErrorMsg();
             }

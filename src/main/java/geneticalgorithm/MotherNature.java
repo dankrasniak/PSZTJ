@@ -48,7 +48,7 @@ public class MotherNature
 			tmp = generateRandomFenotype(startingWeights.size());
             neuralNetwork.uploadWeights(tmp.getGenotype());
             receivedOutputs = neuralNetwork.computeData(learningData);
-			tmp.setQuality(rateOutputs(receivedOutputs));
+			tmp.setQuality(rateOutputs(receivedOutputs, learningData));
 			population.add(tmp);
 		}
 		Collections.sort(population);
@@ -104,7 +104,7 @@ public class MotherNature
         for(Fenotype fenotype : population)
         {
             neuralNetwork.uploadWeights(fenotype.getGenotype());
-            qualities.add(rateOutputs(neuralNetwork.computeData(testingData)));
+            qualities.add(rateOutputs(neuralNetwork.computeData(testingData), testingData));
         }
         return qualities;
     }
@@ -324,7 +324,7 @@ public class MotherNature
         Fenotype offspring = new Fenotype(genotype, distribution);
         neuralNetwork.uploadWeights(offspring.getGenotype());
         ArrayList<Output> receivedOutputs = neuralNetwork.computeData(learningData);
-        offspring.setQuality(rateOutputs(receivedOutputs));
+        offspring.setQuality(rateOutputs(receivedOutputs, learningData));
         return offspring;
     }
 
@@ -343,13 +343,13 @@ public class MotherNature
     }
 
 
-    private Double rateOutputs(final ArrayList<Output> receivedOutputs)
+    private Double rateOutputs(final ArrayList<Output> receivedOutputs, final Data data)
     {
         double TP = 0;
         double FP = 0;
         double TN = 0;
         double FN = 0;
-        ArrayList<Output> expectedOutputs = learningData.getOutputs();
+        ArrayList<Output> expectedOutputs = data.getOutputs();
         for(int i = 0; i < receivedOutputs.size(); i++)
         {
             if(expectedOutputs.get(i).getOutput() && receivedOutputs.get(i).getOutput())
