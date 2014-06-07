@@ -119,6 +119,7 @@ public class Gui extends JFrame {
                 nextEpochBtn.setEnabled(true);
                 testPopulationBtn.setEnabled(true);
                 epochCount.setEditable(true);
+                currentEpochNo.setText("");
                 startingPopulationTextArea.setText("");
                 currentPopulationTextArea.setText("");
                 manager.createMotherNature(populationQuantity);
