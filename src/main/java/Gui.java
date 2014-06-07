@@ -8,9 +8,8 @@ import java.util.List;
  */
 public class Gui extends JFrame {
 
-    private static final String title = "Podstawy Sztucznej Inteligencji";
+    private static final String TITLE = "Podstawy Sztucznej Inteligencji";
     private JButton nextEpochBtn;
-    private JProgressBar progress;
     private JPanel root;
     private JTextField startingSelectionPression;
     private JTextField endingSelectionPression;
@@ -25,14 +24,19 @@ public class Gui extends JFrame {
     private JTextField populationSize;
     private JButton testPopulationBtn;
     private ApplicationManager manager;
+
     public Gui(ApplicationManager manager) {
-        super(title);
+        super(TITLE);
         this.manager = manager;
         setContentPane(root);
         pack();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
 
+        attachListeners();
+    }
+
+    private void attachListeners() {
         nextEpochBtn.addActionListener(nextEpochBtnClicked);
         runAutomaticallyBtn.addActionListener(runAutomaticallyBtnClicked);
         newPopulationBtn.addActionListener(newPopulationBtnClicked);
@@ -63,11 +67,11 @@ public class Gui extends JFrame {
         manager.setMatchSimilar(matchSimilarCheckBox.isSelected());
     }
 
-    private double getStartingSelectionPression() {
+    private double getStartingSelectionPressure() {
         return Double.parseDouble(startingSelectionPression.getText());
     }
 
-    private double getEndingSelectionPrecision() {
+    private double getEndingSelectionPressure() {
         return Double.parseDouble(endingSelectionPression.getText());
     }
 
@@ -84,26 +88,23 @@ public class Gui extends JFrame {
         public void actionPerformed(ActionEvent e) {
             try {
                 int iterations = Integer.parseInt(epochCount.getText());
-                double startingPression = getStartingSelectionPression();
-                double endingPression = getEndingSelectionPrecision();
                 setCheckboxParameters();
                 epochCount.setEditable(false);
-                manager.runOnce(iterations, startingPression, endingPression);
+                manager.runOnce(iterations, getStartingSelectionPressure(), getEndingSelectionPressure());
             } catch (NumberFormatException ex) {
                 runNumberParametersErrorMsg();
             }
         }
     };
+
     ActionListener runAutomaticallyBtnClicked = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
                 int iterations = Integer.parseInt(epochCount.getText());
-                double startingPression = getStartingSelectionPression();
-                double endingPression = getEndingSelectionPrecision();
                 setCheckboxParameters();
                 epochCount.setEditable(false);
-                manager.runAutomatically(iterations, startingPression, endingPression);
+                manager.runAutomatically(iterations, getStartingSelectionPressure(), getEndingSelectionPressure());
             } catch (NumberFormatException ex) {
                 runNumberParametersErrorMsg();
             }

@@ -2,61 +2,37 @@ import data.Data;
 import data.Input;
 import data.Output;
 import geneticalgorithm.MotherNature;
-import neuralnetwork.NeuralLayer;
-import neuralnetwork.NeuralNetwork;
-import neuralnetwork.Neuron;
-import neuralnetwork.Weights;
 import parser.Parser;
+import utils.EpochCounter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class ApplicationManager {
 
-    private MotherNature motherNature;
-    private  Gui applicationGui;
-    private  NeuralNetwork neuralNetwork;
+    private final EpochCounter epochCounter;
     private Data learningData = new Data();
     private Data testingData = new Data();
-    private int stepCounter = 0;
+    private MotherNature model;
+
+    private Gui applicationGui;
 
     public ApplicationManager() {
         parseData();
-        neuralNetwork = new NeuralNetwork(createNeuralLayers());
         applicationGui = new Gui(this);
+        epochCounter = new EpochCounter();
     }
 
-    private ArrayList<NeuralLayer> createNeuralLayers() {
-        Random random = new Random();
-        ArrayList<Neuron> neurons = new ArrayList<Neuron>();
-        ArrayList<Double> weights;
-        ArrayList<NeuralLayer> neuralLayers = new ArrayList<NeuralLayer>();
-        for (int i = 0; i < 3; i++) {
-            weights = new ArrayList<Double>();
-            for (int j = 0; j < 3; j++) {
-                weights.add(random.nextDouble());
-            }
-            neurons.add(new Neuron(new Weights(weights)));
-        }
-        neuralLayers.add(new NeuralLayer(neurons));
-        neurons = new ArrayList<Neuron>();
-        weights = new ArrayList<Double>();
-        for (int j = 0; j < 3; j++) {
-            weights.add(random.nextDouble());
-        }
-        neurons.add(new Neuron(new Weights(weights)));
-        neuralLayers.add(new NeuralLayer(neurons));
-        return neuralLayers;
+    public static void main(String[] args) {
+        new ApplicationManager();
     }
 
     private void parseData() {
-        Parser parser = new Parser();
-        Data data = parser.getData();
+        Data data = new Parser().getData();
+        fillDataLists(data.getInputs(), data.getOutputs());
+    }
 
-        ArrayList<Input> inputs = data.getInputs();
-        ArrayList<Output> outputs = data.getOutputs();
-
+    private void fillDataLists(ArrayList<Input> inputs, ArrayList<Output> outputs) {
         for (int i = 0; i < inputs.size(); i++) {
             if (i < 0.8 * inputs.size()) {
                 learningData.inputData(inputs.get(i), outputs.get(i));
@@ -66,53 +42,46 @@ public class ApplicationManager {
         }
     }
 
-    public void runAutomatically(int iterations, double startingPression, double endingPression) {
-        double pression = calculatePression(iterations, startingPression, endingPression);
-        for (int i = stepCounter; i < iterations; i++) {
-            step(pression);
-            applicationGui.setCurrentEpochNo((++stepCounter) + "/" + iterations);
+    public void runAutomatically(int iterations, double startingPressure, double endingPressure) {
+        double pressurePerStep = calculateSelectionPressure(iterations, startingPressure, endingPressure);
+        for (int i = epochCounter.get(); i < iterations; i++) {
+            step(pressurePerStep);
+            applicationGui.setCurrentEpochNo((epochCounter.getIncremented()) + "/" + iterations);
             applicationGui.repaint();
         }
     }
 
     public void runOnce(int iterations, double startingPression, double endingPression) {
-        double pression = calculatePression(iterations, startingPression, endingPression);
+        double pression = calculateSelectionPressure(iterations, startingPression, endingPression);
         step(pression);
-        applicationGui.setCurrentEpochNo((++stepCounter) + "/" + iterations);
-        applicationGui.repaint();
+        applicationGui.setCurrentEpochNo((epochCounter.getIncremented()) + "/" + iterations);
     }
 
-    private double calculatePression(int iterations, double startingPression, double endingPression) {
-        return (endingPression - startingPression) / (double) iterations;
+    private double calculateSelectionPressure(int iterations, double startingPressure, double endingPressure) {
+        return (endingPressure - startingPressure) / (double) iterations;
     }
 
     public void step(double pression) {
-        motherNature.nextEpoch();
-        motherNature.setSelectionPressure(motherNature.getSelectionPression() + pression);
-        applicationGui.setCurrentPopulationTextArea(motherNature.getQualities());
+        model.nextEpoch();
+        model.setSelectionPressure(model.getSelectionPression() + pression);
+        applicationGui.setCurrentPopulationTextArea(model.getQualities());
     }
 
     public void setMatchSimilar(boolean value) {
-        motherNature.setMatchSimilar(value);
+        model.setMatchSimilar(value);
     }
 
     public void setEliteStategy(boolean value) {
-        motherNature.setEliteStrategy(value);
+        model.setEliteStrategy(value);
     }
 
     public void createMotherNature(int populationCount) {
-        motherNature = new MotherNature(neuralNetwork, populationCount , learningData, testingData);
-        applicationGui.setStartingPopulationTextArea(motherNature.getQualities());
-        stepCounter = 0;
+        model = new MotherNature(populationCount, learningData, testingData);
+        applicationGui.setStartingPopulationTextArea(model.getQualities());
+        epochCounter.reset();
     }
 
     public List<Double> getTestedQualities() {
-        return motherNature.getTestedQualities();
+        return model.getTestedQualities();
     }
-
-    public static void main(String[] args) {
-        new ApplicationManager();
-    }
-
-
 }

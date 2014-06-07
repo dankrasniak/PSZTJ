@@ -24,10 +24,10 @@ public class MotherNature
     private Double highestGene;
 
 
-    public MotherNature(final NeuralNetwork neuralNetwork, final int populationSize,
+    public MotherNature(final int populationSize,
         final Data learningData, final Data testingData)
 	{
-		this.neuralNetwork = neuralNetwork;
+		this.neuralNetwork = new NeuralNetwork();
         this.learningData = learningData;
         this.testingData = testingData;
         this.eliteStrategy = true;

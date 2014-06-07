@@ -1,6 +1,7 @@
 package neuralnetwork;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import data.Data;
 import data.Input;
@@ -13,8 +14,36 @@ import data.Output;
 public class NeuralNetwork {
     private ArrayList<NeuralLayer> neuralLayers;
 
-    public NeuralNetwork(final ArrayList<NeuralLayer> neuralLayers) {
-        this.neuralLayers = neuralLayers;
+    public NeuralNetwork() {
+        this.neuralLayers = createNeuralLayers();
+    }
+
+
+    private ArrayList<NeuralLayer> createNeuralLayers() {
+        ArrayList<NeuralLayer> neuralLayers = new ArrayList<NeuralLayer>();
+        ArrayList<Neuron> neurons = new ArrayList<Neuron>();
+        ArrayList<Double> weights;
+        Random random = new Random();
+        for (int i = 0; i < 3; i++) {
+            weights = calculateWeights(random);
+            neurons.add(new Neuron(new Weights(weights)));
+        }
+        neuralLayers.add(new NeuralLayer(neurons));
+        neurons = new ArrayList<Neuron>();
+        weights = calculateWeights(random);
+        neurons.add(new Neuron(new Weights(weights)));
+        NeuralLayer lastLayer = new NeuralLayer(neurons);
+        neuralLayers.add(lastLayer);
+        return neuralLayers;
+    }
+
+    private ArrayList<Double> calculateWeights(Random random) {
+        ArrayList<Double> weights;
+        weights = new ArrayList<Double>();
+        for (int j = 0; j < 3; j++) {
+            weights.add(random.nextDouble());
+        }
+        return weights;
     }
 
     /**
